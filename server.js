@@ -1,7 +1,7 @@
 // server.js
 
 // set up ======================================================================
-// get all the tools we need
+// get all the tools we need.
 require('./config/database.js');
 
 var express  = require('express');
