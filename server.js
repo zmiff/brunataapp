@@ -9,7 +9,6 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
-var jwt          = require('jsonwebtoken');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -37,11 +36,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
-app.use(session({
-    secret: process.env.JWT_SECRET, // session secret
-    resave: true,
-    saveUninitialized: true
-}));
+app.set('trust proxy', 1) // trust first proxy
+var sess = {
+  secret: 'qwertysomesecret123w09ueiasjd',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+app.use(session(sess))
+
+// app.use(session({
+//     secret: process.env.JWT_SECRET, // session secret
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: { secure: true }
+// }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
