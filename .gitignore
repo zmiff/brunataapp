@@ -1,4 +1,3 @@
 .git
-package.-lock.json
 config/database.json
 node_modules
