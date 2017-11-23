@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
+var jwt          = require('jsonwebtoken');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -37,7 +38,7 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
 app.use(session({
-    secret: '12345qwerty', //process.env.SECRET, // session secret
+    secret: process.env.JWT_SECRET, // session secret
     resave: true,
     saveUninitialized: true
 }));
